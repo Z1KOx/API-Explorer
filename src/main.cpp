@@ -1,4 +1,4 @@
-#include "gui.h"
+#include "render.h"
 
 #include <thread>
 
@@ -9,23 +9,23 @@ int __stdcall wWinMain(
 	int commandShow)
 {
 	// create gui
-	gui::CreateHWindow("API Helper");
-	gui::CreateDevice();
-	gui::CreateImGui();
+	render::CreateHWindow("API Helper");
+	render::CreateDevice();
+	render::CreateImGui();
 
-	while (gui::isRunning)
+	while (render::isRunning)
 	{
-		gui::BeginRender();
-		gui::Render();
-		gui::EndRender();
+		render::BeginRender();
+		render::Render();
+		render::EndRender();
 
 		std::this_thread::sleep_for(std::chrono::milliseconds(5));
 	}
 
 	// destroy gui
-	gui::DestroyImGui();
-	gui::DestroyDevice();
-	gui::DestroyHWindow();
+	render::DestroyImGui();
+	render::DestroyDevice();
+	render::DestroyHWindow();
 
 	return EXIT_SUCCESS;
 }
