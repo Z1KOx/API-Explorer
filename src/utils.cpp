@@ -84,3 +84,24 @@ void utils::drawGradientLineY(
         draw_list->AddRectFilled(rect_start, rect_end, ImGui::ColorConvertFloat4ToU32(col));
     }
 }
+
+void utils::drawShadow(
+    const char* id,
+    const ImVec2& position,
+    const ImVec2& size, 
+    const ImVec4& color
+)
+{
+    ImGui::SetCursorPos(position);
+
+    ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(ImColor(color)));
+
+    ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 10.f);
+
+    ImGui::BeginChild(id, ImVec2(size));
+    {
+        ImGui::PopStyleVar(1);
+        ImGui::PopStyleColor(1);
+        ImGui::EndChild();
+    }
+}

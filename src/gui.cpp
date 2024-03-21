@@ -38,22 +38,6 @@ void drawTitleBar()
 	}
 }
 
-void drawShadow(const ImVec2 position, const ImVec4 color)
-{
-	ImGui::SetCursorPos(position);
-
-	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(ImColor(color)));
-
-	ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 10.f);
-
-	ImGui::BeginChild("Shadow", ImVec2(250.f, 235.f));
-	{
-		ImGui::PopStyleVar(1);
-		ImGui::PopStyleColor(1);
-		ImGui::EndChild();
-	}
-}
-
 void drawConfigChild()
 {
 	ImGui::SetCursorPos({ 25.f, 35.f });
@@ -73,7 +57,7 @@ void drawConfigChild()
 			ImGui::TextColored(ImVec4(ImColor(232, 232, 232, 255)), "Configuration Tab");
 		}
 
-		// Draw line with shadows
+		// Draw Line and shadows on it
 		{
 			for (int i = 0; i <= 4; ++i)
 			{
@@ -144,6 +128,39 @@ void drawConfigChild()
 	ImGui::PopStyleColor(2);
 }
 
+void drawAPIpreview()
+{
+	ImGui::SetCursorPos(ImVec2(300.f, 35.f));
+
+	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(ImColor(14, 14, 14, 255)));
+	ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(ImColor(18, 18, 18, 255)));
+
+	ImGui::PushStyleVar(ImGuiStyleVar_ChildBorderSize, 1.f);
+	ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 10.f);
+
+	ImGui::BeginChild("Api-Preview-Box", ImVec2(374.f, 235.f), true);
+	{
+		// API-Preview label
+		{
+			ImGui::SetCursorPos(ImVec2(10.f, 8.f));
+			ImGui::TextColored(ImVec4(ImColor(232, 232, 232, 255)), "API-Preview Tab");
+		}
+
+		// Draw Line and shadows on it
+		{
+			for (int i = 0; i <= 4; ++i)
+			{
+				int alpha = 100 - i * 20;
+				utils::drawLineX(ImVec2(300.f, 65.f + i), 374.f, ImVec4(ImColor(24, 24, 24, alpha)));
+			}
+		}
+
+		ImGui::PopStyleColor(2);
+		ImGui::PopStyleVar(2);
+		ImGui::EndChild();
+	}
+}
+
 void render::Render() noexcept
 {
 	// Main Window
@@ -180,8 +197,14 @@ void render::Render() noexcept
 
 	// Config Child
 	{
-		drawShadow(ImVec2(30.f, 41.f), ImVec4(ImColor(9, 9, 9, 100)));
+		utils::drawShadow("Shadow1", ImVec2(30.f, 41.f), ImVec2(250.f, 235.f), ImVec4(ImColor(9, 9, 9, 100)));
 		drawConfigChild();
+	}
+
+	// API Preview Child
+	{
+		utils::drawShadow("Shadow2", ImVec2(305.f, 41.f), ImVec2(374.f, 235.f), ImVec4(ImColor(9, 9, 9, 100)));
+		drawAPIpreview();
 	}
 
 	ImGui::PopStyleVar();

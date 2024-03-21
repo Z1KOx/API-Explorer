@@ -34,6 +34,13 @@ namespace utils
 		const ImVec4& start_color = ImVec4(ImColor(255, 0, 0, 255)), // rgba
 		const ImVec4& end_color = ImVec4(ImColor(0, 255, 0, 255))
 	);
+
+	void drawShadow(
+		const char* id, // Plesae dont make 2 shadows with same id (name)
+		const ImVec2& position,
+		const ImVec2& size,
+		const ImVec4& color = ImVec4(ImColor(9, 9, 9, 100))
+	);
 }
 
 #endif
