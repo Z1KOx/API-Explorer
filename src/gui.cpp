@@ -1,5 +1,6 @@
 ﻿#include "render.h"
 #include "utils.h"
+
 #include "../imgui/imgui.h"
 
 void drawExitButton()
@@ -66,16 +67,76 @@ void drawConfigChild()
 	ImGui::SetCursorPos({ 25.f, 35.f });
 	ImGui::BeginChild("Get configuration", ImVec2(250.f, 235.f), true);
 	{
-		ImGui::SetCursorPos(ImVec2(10.f, 8.f));
-		ImGui::TextColored(ImVec4(ImColor(232, 232, 232, 255)), "Configuration Tab");
-
-		// Draw line with shadows
-		for (int i = 0; i <= 4; ++i)
+		// Configuration Tab label
 		{
-			int alpha = 100 - i * 20;
-			utils::drawLineX(ImVec2(25.f, 65.f + i), 250.f, ImVec4(ImColor(24, 24, 24, alpha)));
+			ImGui::SetCursorPos(ImVec2(10.f, 8.f));
+			ImGui::TextColored(ImVec4(ImColor(232, 232, 232, 255)), "Configuration Tab");
 		}
 
+		// Draw line with shadows
+		{
+			for (int i = 0; i <= 4; ++i)
+			{
+				int alpha = 100 - i * 20;
+				utils::drawLineX(ImVec2(25.f, 65.f + i), 250.f, ImVec4(ImColor(24, 24, 24, alpha)));
+			}
+		}
+
+		// Enter API label
+		{
+			ImGui::SetCursorPos(ImVec2(10.f, 40.f));
+			ImGui::Text("Enter API");
+		}
+
+		// Tooltip '?'
+		{
+			ImGui::SetCursorPos(ImVec2(70.f, 37.f));
+			ImGui::SetWindowFontScale(0.8f);
+			ImGui::TextColored(ImVec4(ImColor(182, 116, 16, 255)), "{?}");
+			ImGui::SetWindowFontScale(1.0f);
+
+			if (ImGui::IsItemHovered())
+				ImGui::SetTooltip("Please enter your api key/link here and click on submit");
+		}
+
+		// InputBox for api
+		static char apiLink[256] = "";
+		{
+			ImGui::SetCursorPos(ImVec2(15.f, 60.f));
+
+			ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(ImColor(11, 11, 11, 255)));
+			ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(ImColor(24, 24, 24, 255)));
+
+			ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.f);
+			ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 5.f);
+
+			ImGui::PushItemWidth(225.f);
+			ImGui::InputText("##apiLink", apiLink, sizeof(apiLink));
+
+			ImGui::PopStyleVar(2);
+			ImGui::PopStyleColor(2);
+		}
+
+		// Submit Button
+		static bool submitButton = false;
+		{
+			ImGui::SetCursorPos(ImVec2(160.f, 85));
+
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(ImColor(11, 11, 11, 255)));
+			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(ImColor(25, 25, 25, 255)));
+			ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(ImColor(35, 35, 35, 255)));
+
+			ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(ImColor(24, 24, 24, 255)));
+
+			ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.f);
+			ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 5.f);
+
+			if (ImGui::Button("Submit", ImVec2(80, 20)))
+				submitButton = true;
+
+			ImGui::PopStyleColor(4);
+			ImGui::PopStyleVar(2);
+		}
 	}
 	ImGui::EndChild();
 
@@ -102,10 +163,9 @@ void render::Render() noexcept
 			ImGuiWindowFlags_NoMove |
 			ImGuiWindowFlags_NoTitleBar
 		);
-
-		ImGui::PopStyleColor(1);
-		ImGui::PopStyleVar(2);
 	}
+
+	ImGui::PopStyleColor(1);
 
 	// TitleBar
 	{
@@ -124,5 +184,6 @@ void render::Render() noexcept
 		drawConfigChild();
 	}
 
+	ImGui::PopStyleVar();
 	ImGui::End();
 }
