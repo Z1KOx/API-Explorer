@@ -157,6 +157,7 @@
     <ClInclude Include="imgui\imstb_textedit.h" />
     <ClInclude Include="imgui\imstb_truetype.h" />
     <ClInclude Include="src\fonts.h" />
+    <ClInclude Include="src\gui.h" />
     <ClInclude Include="src\render.h" />
     <ClInclude Include="src\utils.h" />
   </ItemGroup>
