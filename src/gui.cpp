@@ -1,6 +1,7 @@
 ﻿#include "render.h"
 #include "utils.h"
 #include "gui.h"
+#include "api.h"
 
 #include "../imgui/imgui.h"
 
@@ -95,7 +96,10 @@ void drawConfigChild()
 			ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 5.f);
 
 			ImGui::PushItemWidth(225.f);
-			ImGui::InputText("##apiLink", api::apiLink, sizeof(api::apiLink));
+			char buffer[256];
+			strcpy_s(buffer, sizeof(buffer), API::userApiLink.c_str());
+			if (ImGui::InputText("##apiLink", buffer, sizeof(buffer)))
+				API::userApiLink = buffer;
 
 			ImGui::PopStyleVar(2);
 			ImGui::PopStyleColor(2);
@@ -116,6 +120,15 @@ void drawConfigChild()
 
 			if (ImGui::Button("Submit", ImVec2(80, 20)))
 				btn::submit = true;
+
+			if (btn::submit)
+			{
+				if (!API::userApiLink.empty() && !API::requsted)
+				{
+					API::response = API::getAPI();
+					API::requsted = true;
+				}
+			}
 
 			ImGui::PopStyleColor(4);
 			ImGui::PopStyleVar(2);
@@ -160,17 +173,23 @@ void drawAPIpreview()
 
 			ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(ImColor(11, 11, 11, 255)));
 
-			ImGui::BeginChild("Api-Response-Bg", ImVec2(api::childWidth, api::childHeight), true);
+			ImGui::BeginChild("Api-Response-Bg", ImVec2(childs::apiPrev_Width, childs::apiPrev_Height), true);
 			{
 				ImGui::SetCursorPos(ImVec2(10.f, 10.f));
-				ImGui::TextColored(ImVec4(ImColor(70, 70, 75, 255)), "none");
+				if (!API::requsted)
+					ImGui::TextColored(ImVec4(ImColor(70, 70, 75, 255)), "none");
 
 				if (btn::submit)
 				{
-					if (api::childHeight <= 185.f)
-						++api::childHeight;
-					if (api::childWidth <= 354.f)
-						api::childWidth += 2.f;
+					if (childs::apiPrev_Height <= 185.f)
+						++childs::apiPrev_Height;
+					if (childs::apiPrev_Width <= 354.f)
+						childs::apiPrev_Width += 2.f;
+				}
+				if (API::requsted)
+				{
+					ImGui::SetCursorPos(ImVec2(5.f, 5.f));
+					ImGui::TextWrapped("%s", API::response.c_str());
 				}
 
 				ImGui::PopStyleColor(1);

@@ -1,19 +1,18 @@
 #ifndef GUI_H
 #define GUI_H
 
+#include <string>
+
 namespace btn
 {
 	static bool submit = false;
 }
 
-namespace api
+namespace childs
 {
 	// For the animation
-	static float childHeight = 35.f;
-	static float childWidth = 50.f;
-
-	// Our api link
-	static char apiLink[256] = "";
+	static float apiPrev_Height = 35.f;
+	static float apiPrev_Width = 50.f;
 }
 
 #endif
