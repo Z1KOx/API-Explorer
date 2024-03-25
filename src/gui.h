@@ -6,6 +6,8 @@
 namespace btn
 {
 	static bool submit = false;
+	static bool save = false;
+	static bool del = false;
 }
 
 namespace childs
