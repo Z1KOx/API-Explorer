@@ -14,6 +14,7 @@ namespace draw
 	{
 		void exitButton()
 		{
+			// Set x, y pos
 			ImGui::SetCursorPos(ImVec2(680.f, 5.f));
 
 			// Button color
@@ -28,25 +29,27 @@ namespace draw
 				PostQuitMessage(0);
 
 			ImGui::PopStyleColor(3);
-			ImGui::PopStyleVar();
+			ImGui::PopStyleVar(1);
 		}
 
 		void start()
 		{
+			// Set x, y pos
 			ImGui::SetCursorPos({ 0.f, 0.f });
 
+			// Color child background rgba
 			ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(ImColor(14, 14, 14, 255)));
 
 			ImGui::BeginChild("Titlebar", ImVec2(700.f, 20.f));
 			{
 				draw::titleBar::exitButton();
 
-				ImGui::PopStyleVar();
-				ImGui::PopStyleColor();
+				ImGui::PopStyleColor(1);
 				ImGui::EndChild();
 			}
 
-			utils::drawLineWithShadow(4, 0.f, 19.f, 700.f, 100, 20, 18, 18, 18);
+			// Draw lines with shadow effect: utils.h
+			utils::lineWithShadow(ImVec2(0.f, 19.f), 4, 700.f, 100, 20, 18, 18, 18);
 		}
 	} // titleBar
 
@@ -54,21 +57,28 @@ namespace draw
 	{
 		void labelTab()
 		{
+			// Set x, y pos
 			ImGui::SetCursorPos(ImVec2(10.f, 8.f));
 			ImGui::TextColored(ImVec4(ImColor(232, 232, 232, 255)), "Configuration Tab");
 		}
 
 		void labelEnterAPI()
 		{
+			// Set x, y pos
 			ImGui::SetCursorPos(ImVec2(10.f, 40.f));
 			ImGui::Text("Enter API");
 		}
 
 		void APITooltip()
 		{
+			// Set x, y pos
 			ImGui::SetCursorPos(ImVec2(70.f, 37.f));
+
+			// Make font smaller
 			ImGui::SetWindowFontScale(0.8f);
 			ImGui::TextColored(ImVec4(ImColor(182, 116, 16, 255)), "{?}");
+
+			// restore font size
 			ImGui::SetWindowFontScale(1.0f);
 
 			if (ImGui::IsItemHovered())
@@ -77,19 +87,26 @@ namespace draw
 
 		void APIInputBox()
 		{
+			// Set x, y pos
 			ImGui::SetCursorPos(ImVec2(15.f, 60.f));
 
+			// InputText color
 			ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(ImColor(11, 11, 11, 255)));
 			ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(ImColor(24, 24, 24, 255)));
 
+			// InputText style
 			ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.f);
 			ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 5.f);
 
-			ImGui::PushItemWidth(225.f);
+			// Input buffer
 			static char buffer[256];
 			strcpy_s(buffer, sizeof(buffer), API::userApiLink.c_str());
+
+			// Adjust x size for InputText
+			ImGui::PushItemWidth(225.f);
 			if (ImGui::InputText("##apiLink", buffer, sizeof(buffer)))
 			{
+				// Apply and reset input buffer
 				API::userApiLink = buffer;
 				buffer[0] = '\0';
 			}
@@ -100,14 +117,16 @@ namespace draw
 
 		void submitButton()
 		{
+			// Set x, y pos
 			ImGui::SetCursorPos(ImVec2(160.f, 85));
 
+			// Button colors
 			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(ImColor(11, 11, 11, 255)));
 			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(ImColor(25, 25, 25, 255)));
 			ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(ImColor(35, 35, 35, 255)));
-
 			ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(ImColor(24, 24, 24, 255)));
 
+			// Button style
 			ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.f);
 			ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 5.f);
 
@@ -116,17 +135,21 @@ namespace draw
 
 			if (btn::submit)
 			{
+				// Check if userApiLink is not empty and API request is not already made
 				if (!API::userApiLink.empty() && !API::requested)
 				{
+					// Start a new thread to make API request
 					std::thread apiThread([&]() {
 						API::response = API::getAPI();
 						API::userApiLink = "";
 						}
 					);
 
+					// Detach the thread to let it run independently
 					apiThread.detach();
 				}
 
+				// Check if API response is received
 				if (!API::response.empty())
 					API::requested = true;
 			}
@@ -137,24 +160,32 @@ namespace draw
 
 		void start()
 		{
-			utils::drawShadow("Shadow1", ImVec2(30.f, 41.f), ImVec2(250.f, 235.f), ImVec4(ImColor(9, 9, 9, 100)));
+			// Draw small shadow to our child
+			utils::shadowBox("Shadow1", ImVec2(30.f, 41.f), ImVec2(250.f, 235.f), ImVec4(ImColor(9, 9, 9, 100)));
 
+			// Set x, y pos
 			ImGui::SetCursorPos({ 25.f, 35.f });
 
+			// Background color
 			ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(ImColor(14, 14, 14, 255)));
 			ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(ImColor(18, 18, 18, 255)));
 
+			// Background style
 			ImGui::PushStyleVar(ImGuiStyleVar_ChildBorderSize, 1.f);
 			ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 10.f);
 
-			ImGui::SetCursorPos({ 25.f, 35.f });
 			ImGui::BeginChild("Get configuration", ImVec2(250.f, 235.f), true);
 			{
+				// 'Configuration Tab' text
 				draw::configBox::labelTab();
 
-				utils::drawLineWithShadow(4, 25.f, 64.f, 250.f, 100, 20, 24, 24, 24);
+				// Draw lines with shadow effect: utils.h
+				utils::lineWithShadow(ImVec2(25.f, 64.f), 3, 250.f, 70, 20, 24, 24, 24);
 
+				// 'Enter API' text
 				draw::configBox::labelEnterAPI();
+
+				// '?' text
 				draw::configBox::APITooltip();
 
 				draw::configBox::APIInputBox();
@@ -172,18 +203,22 @@ namespace draw
 	{
 		void labelTab()
 		{
+            // Set x, y pos
 			ImGui::SetCursorPos(ImVec2(10.f, 8.f));
 			ImGui::TextColored(ImVec4(ImColor(232, 232, 232, 255)), "API-Preview Tab");
 		}
 
 		void apiResponseBg()
 		{
+			// Set x, y pos
 			ImGui::SetCursorPos(ImVec2(10.f, 40.f));
 
+			// Background color
 			ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(ImColor(11, 11, 11, 255)));
 
 			ImGui::BeginChild("Api-Response-Bg", ImVec2(childs::apiPrev_Width, childs::apiPrev_Height), true);
 			{
+				// Set x, y pos for 'none' text
 				ImGui::SetCursorPos(ImVec2(10.f, 10.f));
 				if (!API::requested)
 					ImGui::TextColored(ImVec4(ImColor(70, 70, 75, 255)), "none");
@@ -192,12 +227,14 @@ namespace draw
 				{
 					if (btn::submit)
 					{
+						// Opening animation
 						if (childs::apiPrev_Height <= 185.f)
 							++childs::apiPrev_Height;
 						if (childs::apiPrev_Width <= 354.f)
 							childs::apiPrev_Width += 2.f;
 					}
 
+					// Set x, y pos
 					ImGui::SetCursorPos(ImVec2(5.f, 5.f));
 					ImGui::TextWrapped("%s", API::response.c_str());
 				}
@@ -208,22 +245,29 @@ namespace draw
 
 		void start()
 		{
-			utils::drawShadow("Shadow2", ImVec2(305.f, 41.f), ImVec2(374.f, 235.f), ImVec4(ImColor(9, 9, 9, 100)));
+			// Draw small shadow to our child
+			utils::shadowBox("apiPrev", ImVec2(305.f, 41.f), ImVec2(374.f, 235.f), ImVec4(ImColor(9, 9, 9, 100)));
 
+			// Set x, y pos
 			ImGui::SetCursorPos(ImVec2(300.f, 35.f));
 
+			// Background color
 			ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(ImColor(14, 14, 14, 255)));
 			ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(ImColor(18, 18, 18, 255)));
 
+			// Background style
 			ImGui::PushStyleVar(ImGuiStyleVar_ChildBorderSize, 1.f);
 			ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 10.f);
 
 			ImGui::BeginChild("Api-Preview-Box", ImVec2(374.f, 235.f), true);
 			{
+				// 'API-Preview Tab' text
 				draw::apiBox::labelTab();
 
-				utils::drawLineWithShadow(4, 300.f, 65.f, 374.f, 100, 20, 24, 24, 24);
-				
+				// Draw lines with shadow effect: utils.h
+				utils::lineWithShadow(ImVec2(300.f, 65.f), 3, 374.f, 70, 20, 24, 24, 24);
+
+				// Draw new background for API response
 				draw::apiBox::apiResponseBg();
 
 				ImGui::EndChild();
@@ -231,7 +275,7 @@ namespace draw
 
 			ImGui::PopStyleColor(2);
 			ImGui::PopStyleVar(2);
-			ImGui::EndChild();
+			ImGui::EndChild(); // End main child
 		}
 	} // apiBox
 
@@ -242,6 +286,7 @@ namespace draw
 			OPENFILENAME ofn;
 			CHAR szFile[260] = { 0 };
 
+			// Initilize OPENFILENAME structure
 			ZeroMemory(&ofn, sizeof(ofn));
 			ofn.lStructSize = sizeof(ofn);
 			ofn.hwndOwner = NULL;
@@ -254,13 +299,16 @@ namespace draw
 			ofn.lpstrTitle = "Save File";
 			ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_OVERWRITEPROMPT;
 
+			// Prompt user to select file to save
 			if (GetSaveFileName(&ofn) == TRUE)
 			{
 				std::string filename = ofn.lpstrFile;
 
+				// If no file extension provided, add ".txt"
 				if (filename.find('.') == std::string::npos)
 					filename += ".txt";
 
+				// Write content to file
 				std::ofstream file(filename);
 				if (file.is_open())
 				{
@@ -272,12 +320,16 @@ namespace draw
 
 		void save()
 		{
+			// Set x, y pos
 			ImGui::SetCursorPos(ImVec2(615.f, 275.f));
 
+			// Button style
 			ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 10.f);
 			ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.f);
 
-			if (API::requested && !API::response.empty()) {
+			if (API::requested && !API::response.empty())
+			{
+				// Button color
 				ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(ImColor(9, 9, 9, 255)));
 				ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(ImColor(25, 25, 25, 255)));
 				ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(ImColor(35, 35, 35, 255)));
@@ -289,6 +341,7 @@ namespace draw
 			}
 			else
 			{
+				// Button color if no api requested
 				ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(ImColor(5, 5, 5, 255)));
 				ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(ImColor(5, 5, 5, 255)));
 				ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(ImColor(50, 21, 23, 255)));
@@ -304,12 +357,16 @@ namespace draw
 
 		void del()
 		{
-			ImGui::SetCursorPos(ImVec2(562.f, 275.f));
+			// Set x, y pos
+			ImGui::SetCursorPos(ImVec2(557.f, 275.f));
 
+			// Button style
 			ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 10.f);
 			ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.f);
 
-			if (API::requested && !API::response.empty()) {
+			if (API::requested && !API::response.empty()) 
+			{
+				// Button color
 				ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(ImColor(9, 9, 9, 255)));
 				ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(ImColor(25, 25, 25, 255)));
 				ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(ImColor(35, 35, 35, 255)));
@@ -318,14 +375,17 @@ namespace draw
 
 				if (ImGui::Button("Delete", ImVec2(50.f, 20.f)))
 				{
+					// Restore everything so we can use another api input
 					API::response = "";
 					API::requested = false;
+					btn::submit = false;
 
 					btn::del = true;
 				}
 			}
 			else
 			{
+				// Button color if no api requested
 				ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(ImColor(5, 5, 5, 255)));
 				ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(ImColor(5, 5, 5, 255)));
 				ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(ImColor(50, 21, 23, 255)));
@@ -342,38 +402,38 @@ namespace draw
 } // draw
 
 
-	void render::Render() noexcept
+void render::Render() noexcept
+{
+	// Main Window
 	{
-		// Main Window
-		{
-			ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(ImColor(11, 11, 11, 255)));
-			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.f, 0.f));
-			ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+		ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(ImColor(11, 11, 11, 255)));
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.f, 0.f));
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
 
-			ImGui::SetNextWindowPos({ 0, 0 });
-			ImGui::SetNextWindowSize({ WIDTH, HEIGHT });
-			ImGui::Begin(
-				"API Helper",
-				&render::isRunning,
-				ImGuiWindowFlags_NoResize |
-				ImGuiWindowFlags_NoSavedSettings |
-				ImGuiWindowFlags_NoCollapse |
-				ImGuiWindowFlags_NoMove |
-				ImGuiWindowFlags_NoTitleBar
-			);
+		ImGui::SetNextWindowPos({ 0, 0 });
+		ImGui::SetNextWindowSize({ WIDTH, HEIGHT });
+		ImGui::Begin(
+			"API Helper",
+			&render::isRunning,
+			ImGuiWindowFlags_NoResize |
+			ImGuiWindowFlags_NoSavedSettings |
+			ImGuiWindowFlags_NoCollapse |
+			ImGuiWindowFlags_NoMove |
+			ImGuiWindowFlags_NoTitleBar
+		);
 
-			ImGui::PopStyleColor(1);
-		} // Main Window
+		ImGui::PopStyleColor(1);
+	} // Main Window
 
-		draw::titleBar::start();
+	draw::titleBar::start();
 
-		draw::configBox::start();
-		draw::apiBox::start();
+	draw::configBox::start();
+	draw::apiBox::start();
 
-		draw::button::save();
-		draw::button::del();
+	draw::button::save();
+	draw::button::del();
 
-		ImGui::PopStyleVar();
-		ImGui::PopStyleColor();
-		ImGui::End();
-	}
+	ImGui::PopStyleVar();
+	ImGui::PopStyleColor();
+	ImGui::End();
+}

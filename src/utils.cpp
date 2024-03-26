@@ -2,7 +2,7 @@
 #include "../imgui/imgui_internal.h"
 
 // Draw simple lines
-void utils::drawLineX(
+void utils::simplelineX(
     const ImVec2& position,
     const float length, 
     const ImVec4& color
@@ -14,7 +14,7 @@ void utils::drawLineX(
     draw_list->AddLine(position, end, IM_COL32((int)(color.x * 255), (int)(color.y * 255), (int)(color.z * 255), (int)(color.w * 255)));
 }
 
-void utils::drawLineY(
+void utils::simpleLineY(
     const ImVec2& position,
     const float length, 
     const ImVec4& color
@@ -26,10 +26,9 @@ void utils::drawLineY(
     draw_list->AddLine(position, end, IM_COL32((int)(color.x * 255), (int)(color.y * 255), (int)(color.z * 255), (int)(color.w * 255)));
 }
 
-void utils::drawLineWithShadow(
+void utils::lineWithShadow(
+    ImVec2 position,
     int numLines,
-    float startX,
-    float startY,
     float length,
     int initialAlpha,
     int alphaStep,
@@ -41,12 +40,12 @@ void utils::drawLineWithShadow(
     for (int i = 0; i <= numLines; ++i)
     {
         int alpha = initialAlpha - i * alphaStep;
-        utils::drawLineX(ImVec2(startX, startY + i), length, ImVec4(ImColor(colorR, colorG, colorB, alpha)));
+        utils::simplelineX(ImVec2(position.x, position.y + i), length, ImVec4(ImColor(colorR, colorG, colorB, alpha)));
     }
 }
 
 // Draw color fade line
-void utils::drawGradientLineX(
+void utils::gradientLineX(
     const ImVec2& position,
     const float length,
     const int num_steps,
@@ -75,7 +74,7 @@ void utils::drawGradientLineX(
     }
 }
 
-void utils::drawGradientLineY(
+void utils::gradientLineY(
     const ImVec2& position,
     const float length,
     const int num_steps,
@@ -104,7 +103,7 @@ void utils::drawGradientLineY(
     }
 }
 
-void utils::drawShadow(
+void utils::shadowBox(
     const char* id,
     const ImVec2& position,
     const ImVec2& size, 
