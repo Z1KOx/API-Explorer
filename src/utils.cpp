@@ -26,6 +26,25 @@ void utils::drawLineY(
     draw_list->AddLine(position, end, IM_COL32((int)(color.x * 255), (int)(color.y * 255), (int)(color.z * 255), (int)(color.w * 255)));
 }
 
+void utils::drawLineWithShadow(
+    int numLines,
+    float startX,
+    float startY,
+    float length,
+    int initialAlpha,
+    int alphaStep,
+    int colorR,
+    int colorG,
+    int colorB
+)
+{
+    for (int i = 0; i <= numLines; ++i)
+    {
+        int alpha = initialAlpha - i * alphaStep;
+        utils::drawLineX(ImVec2(startX, startY + i), length, ImVec4(ImColor(colorR, colorG, colorB, alpha)));
+    }
+}
+
 // Draw color fade line
 void utils::drawGradientLineX(
     const ImVec2& position,

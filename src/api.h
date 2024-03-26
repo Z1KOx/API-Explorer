@@ -5,7 +5,7 @@
 
 class API {
 public:
-    static bool requsted;
+    static bool requested;
     static bool found;
     static std::string userApiLink;
     static std::string response;

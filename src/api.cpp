@@ -2,7 +2,7 @@
 #include <curl.h>
 
 bool API::found = false;
-bool API::requsted = false;
+bool API::requested = false;
 std::string API::userApiLink = "";
 std::string API::response = "";
 
