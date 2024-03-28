@@ -2,7 +2,7 @@
 #include "../imgui/imgui_internal.h"
 
 // Draw simple lines
-void utils::simplelineX(
+void utils::simpleLineX(
     const ImVec2& position,
     const float length, 
     const ImVec4& color
@@ -40,7 +40,7 @@ void utils::lineWithShadow(
     for (int i = 0; i <= numLines; ++i)
     {
         int alpha = initialAlpha - i * alphaStep;
-        utils::simplelineX(ImVec2(position.x, position.y + i), length, ImVec4(ImColor(colorR, colorG, colorB, alpha)));
+        utils::simpleLineX(ImVec2(position.x, position.y + i), length, ImVec4(ImColor(colorR, colorG, colorB, alpha)));
     }
 }
 

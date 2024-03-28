@@ -93,13 +93,16 @@ void render::CreateHWindow(const char* windowName) noexcept
 
 	RegisterClassEx(&windowClass);
 
+	const int screenWidth = GetSystemMetrics(SM_CXSCREEN);
+	const int screenHeight = GetSystemMetrics(SM_CYSCREEN);
+
 	window = CreateWindowEx(
 		0,
 		"class001",
 		windowName,
 		WS_POPUP,
-		100,
-		100,
+		(screenWidth - WIDTH) / 2,
+		(screenHeight - HEIGHT) / 2,
 		WIDTH,
 		HEIGHT,
 		0,

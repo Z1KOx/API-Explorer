@@ -14,7 +14,8 @@ namespace childs
 {
 	// For the animation
 	static float apiPrev_Height = 35.f;
-	static float apiPrev_Width = 50.f;
+	static float apiSave_Height = 0.f;
+	static float apiSaveShadow_Height = 0.f;
 }
 
 #endif
