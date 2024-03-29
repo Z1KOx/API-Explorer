@@ -5,7 +5,7 @@ namespace render
 {
 	// constant window size
 	constexpr int WIDTH = 700;
-	constexpr int HEIGHT = 300;
+	constexpr int HEIGHT = 350;
 
 	// when this changes, exit threads
 	inline bool isRunning = true;

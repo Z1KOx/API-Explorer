@@ -52,7 +52,7 @@ namespace draw
 		void saveAPI() noexcept
 		{
 			// Set x, y pos
-			ImGui::SetCursorPos(ImVec2(300.f, 227.f));
+			ImGui::SetCursorPos(ImVec2(300.f, 277.f));
 
 			// Button style
 			ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 10.f);
@@ -89,7 +89,7 @@ namespace draw
 		void deleteAPI() noexcept
 		{
 			// Set x, y pos
-			ImGui::SetCursorPos(ImVec2(220.f, 227.f));
+			ImGui::SetCursorPos(ImVec2(220.f, 277.f));
 
 			// Button style
 			ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 10.f);
@@ -375,7 +375,7 @@ namespace draw
 				{
 					// Opening animation
 					if (btn::submit)
-						if (childs::apiPrev_Height <= 185.f)
+						if (childs::apiPrev_Height <= 235.f)
 							++childs::apiPrev_Height;
 
 					// Set x, y pos
@@ -391,7 +391,7 @@ namespace draw
 		void start() noexcept
 		{
 			// Draw small shadow to our child
-			utils::shadowBox("apiPrev", ImVec2(305.f, 41.f), ImVec2(374.f, 250.f), ImVec4(ImColor(9, 9, 9, 100)));
+			utils::shadowBox("apiPrev", ImVec2(305.f, 41.f), ImVec2(374.f, 300.f), ImVec4(ImColor(9, 9, 9, 100)));
 
 			// Set x, y pos
 			ImGui::SetCursorPos(ImVec2(300.f, 35.f));
@@ -404,7 +404,7 @@ namespace draw
 			ImGui::PushStyleVar(ImGuiStyleVar_ChildBorderSize, 1.f);
 			ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 10.f);
 
-			ImGui::BeginChild("Api-Preview-Box", ImVec2(374.f, 250.f), true);
+			ImGui::BeginChild("Api-Preview-Box", ImVec2(374.f, 300.f), true);
 			{
 				// 'API-Preview Tab' text
 				draw::APIViewerBox::labelTab();
@@ -449,10 +449,17 @@ namespace draw
 			ImGui::Text("Enter Chain Save");
 		}
 
+		void labelSelectDatatype() noexcept
+		{
+			// Set x, y pos
+			ImGui::SetCursorPos(ImVec2(10.f, 90.f));
+			ImGui::Text("Select Datatype");
+		}
+
 		void saveTooltip() noexcept
 		{
 			// Set x, y pos
-			ImGui::SetCursorPos(ImVec2(115.f, 37.f));
+			ImGui::SetCursorPos(ImVec2(117.f, 37.f));
 
 			// Make font smaller
 			ImGui::SetWindowFontScale(0.8f);
@@ -498,7 +505,7 @@ namespace draw
 		void saveChainButton() noexcept
 		{
 			// Set x, y pos
-			ImGui::SetCursorPos(ImVec2(160.f, 85));
+			ImGui::SetCursorPos(ImVec2(160.f, 140.f));
 
 			// Button style
 			ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.f);
@@ -515,6 +522,10 @@ namespace draw
 
 				if (ImGui::Button("Save Chain", ImVec2(80.f, 20.f)))
 				{
+
+
+
+
 					userSaveChain = "";
 					// Placeholder
 				}
@@ -536,10 +547,65 @@ namespace draw
 			ImGui::PopStyleVar(2);
 		}
 
+		void datatypeTooltip() noexcept
+		{
+				// Set x, y pos
+				ImGui::SetCursorPos(ImVec2(109.f, 87.f));
+
+				// Make font smaller
+				ImGui::SetWindowFontScale(0.8f);
+				ImGui::TextColored(ImVec4(ImColor(182, 116, 16, 255)), "{?}");
+
+				// restore font size
+				ImGui::SetWindowFontScale(1.0f);
+
+				if (ImGui::IsItemHovered())
+					ImGui::SetTooltip("Select your datatype what you want to save");
+		}
+
+		void datatypeSlider() noexcept
+		{
+			static int datatypeSelect = 1;
+
+			ImGui::SetCursorPos(ImVec2(15.f, 110.f));
+
+			// Slider color
+			ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(ImColor(11, 11, 11, 255)));
+			ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImVec4(ImColor(14, 14, 14, 255)));
+			ImGui::PushStyleColor(ImGuiCol_FrameBgActive, ImVec4(ImColor(17, 17, 17, 255)));
+			ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(ImColor(24, 24, 24, 255)));
+			ImGui::PushStyleColor(ImGuiCol_SliderGrab, ImVec4(ImColor(182, 116, 16, 255)));
+			ImGui::PushStyleColor(ImGuiCol_SliderGrabActive, ImVec4(ImColor(200, 126, 16, 255)));
+
+			// Slider style
+			ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.f);
+			ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 5.f);
+
+			ImGui::SliderInt(" ", &datatypeSelect, 1, 3, "");
+
+			switch (datatypeSelect)
+			{
+			case 1:
+				ImGui::SetCursorPos(ImVec2(202.f, 90.f));
+				ImGui::TextColored(ImVec4(ImColor(224, 49, 49, 255)), "String");
+				break;
+			case 2:
+				ImGui::SetCursorPos(ImVec2(222.f, 90.f));
+				ImGui::TextColored(ImVec4(ImColor(224, 49, 49, 255)), "Int");
+				break;
+			case 3:
+				ImGui::SetCursorPos(ImVec2(189.f, 90.f));
+				ImGui::TextColored(ImVec4(ImColor(224, 49, 49, 255)), "Boolean");
+			}
+
+			ImGui::PopStyleVar(2);
+			ImGui::PopStyleColor(6);
+		}
+
 		void start() noexcept
 		{
 			// Move shadow with SaveAPI child
-			if (childs::apiSaveShadow_Height <= 120.f)
+			if (childs::apiSaveShadow_Height <= 170.f)
 				++childs::apiSaveShadow_Height;
 
 			// Draw small shadow to our child
@@ -557,7 +623,7 @@ namespace draw
 			ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 10.f);
 
 			// Animate height
-			if (childs::apiSave_Height <= 119.f)
+			if (childs::apiSave_Height <= 169.f)
 				++childs::apiSave_Height;
 
 			ImGui::BeginChild("SaveAPI", ImVec2(250.f, childs::apiSave_Height), true, ImGuiWindowFlags_NoScrollbar);
@@ -566,11 +632,15 @@ namespace draw
 
 				utils::lineWithShadow(ImVec2(25.f, 194.f), 3, 250.f, 70, 20, 24, 24, 24);
 
-				saveAPIBox::labelWhatSave();
-				saveAPIBox::saveTooltip();
+				draw::saveAPIBox::labelWhatSave();
+				draw::saveAPIBox::saveTooltip();
 
-				saveAPIBox::saveInputBox();
-				saveAPIBox::saveChainButton();
+				draw::saveAPIBox::saveInputBox();
+				draw::saveAPIBox::saveChainButton();
+
+				draw::saveAPIBox::labelSelectDatatype();
+				draw::saveAPIBox::datatypeTooltip();
+				draw::saveAPIBox::datatypeSlider();
 
 				ImGui::PopStyleColor(2);
 				ImGui::PopStyleVar(2);

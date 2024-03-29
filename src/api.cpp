@@ -1,5 +1,6 @@
 #include "api.h"
-#include <curl.h>
+#include <curl/curl.h>
+#include <nlohmann/json.hpp>
 
 bool API::found = false;
 bool API::requested = false;
