@@ -1,8 +1,6 @@
 #ifndef GUI_H
 #define GUI_H
 
-#include <string>
-
 namespace btn
 {
 	static bool submit = false;
