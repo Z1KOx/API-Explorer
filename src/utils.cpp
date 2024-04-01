@@ -4,9 +4,9 @@
 // Draw simple lines
 void utils::simpleLineX(
     const ImVec2& position,
-    const float length, 
+    const float length,
     const ImVec4& color
-)
+) noexcept
 {
     ImDrawList* draw_list = ImGui::GetWindowDrawList();
     const ImVec2 end(position.x + length, position.y);
@@ -18,7 +18,7 @@ void utils::simpleLineY(
     const ImVec2& position,
     const float length, 
     const ImVec4& color
-)
+) noexcept
 {
     ImDrawList* draw_list = ImGui::GetWindowDrawList();
     const ImVec2 end(position.x, position.y + length);
@@ -35,7 +35,7 @@ void utils::lineWithShadow(
     int colorR,
     int colorG,
     int colorB
-)
+) noexcept
 {
     for (int i = 0; i <= numLines; ++i)
     {
@@ -51,7 +51,7 @@ void utils::gradientLineX(
     const int num_steps,
     const ImVec4& start_color,
     const ImVec4& end_color
-)
+) noexcept
 {
     ImDrawList* draw_list = ImGui::GetWindowDrawList();
     const ImVec2 gradient_end = ImVec2(position.x + length, position.y + 1.f);
@@ -80,7 +80,7 @@ void utils::gradientLineY(
     const int num_steps,
     const ImVec4& start_color,
     const ImVec4& end_color
-)
+) noexcept
 {
     ImDrawList* draw_list = ImGui::GetWindowDrawList();
     const ImVec2 gradient_end = ImVec2(position.x + 1.f, position.y + length);
@@ -108,7 +108,7 @@ void utils::shadowBox(
     const ImVec2& position,
     const ImVec2& size, 
     const ImVec4& color
-)
+) noexcept
 {
     ImGui::SetCursorPos(position);
 
