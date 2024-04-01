@@ -15,19 +15,19 @@ namespace draw
 {
 	namespace button
 	{
-		void saveToFile(const std::string& content) noexcept
+		void saveToFile(const json& jsonData) noexcept
 		{
 			OPENFILENAME ofn;
 			CHAR szFile[260] = { 0 };
 
-			// Initilize OPENFILENAME structure
+			// Initialize OPENFILENAME structure
 			ZeroMemory(&ofn, sizeof(ofn));
 			ofn.lStructSize = sizeof(ofn);
 			ofn.hwndOwner = NULL;
 			ofn.lpstrFile = szFile;
 			ofn.lpstrFile[0] = '\0';
 			ofn.nMaxFile = sizeof(szFile);
-			ofn.lpstrFilter = "Text Files (*.txt)\0*.txt\0All Files (*.*)\0*.*\0";
+			ofn.lpstrFilter = "JSON Files (*.json)\0*.json\0All Files (*.*)\0*.*\0";
 			ofn.nFilterIndex = 1;
 			ofn.lpstrInitialDir = NULL;
 			ofn.lpstrTitle = "Save File";
@@ -38,15 +38,15 @@ namespace draw
 			{
 				std::string filename = ofn.lpstrFile;
 
-				// If no file extension provided, add ".txt"
+				// If no file extension provided, add ".json"
 				if (filename.find('.') == std::string::npos)
-					filename += ".txt";
+					filename += ".json";
 
-				// Write content to file
+				// Write formatted JSON data to file
 				std::ofstream file(filename);
 				if (file.is_open())
 				{
-					file << content;
+					file << jsonData.dump(4);
 					file.close();
 				}
 			}
@@ -70,8 +70,10 @@ namespace draw
 				// Set x, y pos
 				ImGui::SetCursorPos(ImVec2(300.f, 277.f));
 
+				json jsonData = json::parse(API::m_response);
+
 				if (ImGui::Button("Save API", ImVec2(65.f, 20.f)))
-					draw::button::saveToFile(API::m_response);
+					saveToFile(jsonData);
 			}
 			else
 			{
