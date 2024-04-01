@@ -362,12 +362,12 @@ namespace draw
 	{
 		void apiResponseBg() noexcept
 		{
-			// Set x, y pos
-			ImGui::SetCursorPos(ImVec2(10.f, 40.f));
-
 			// Background color
 			ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(ImColor(11, 11, 11, 255)));
 
+			// Set x, y pos
+			ImGui::SetCursorPos(ImVec2(10.f, 40.f));
+			
 			ImGui::BeginChild("Api-Response-Bg", ImVec2(354.f, childs::apiPrev_Height), true, ImGuiWindowFlags_HorizontalScrollbar);
 			{
 				// Set x, y pos for 'none' text
@@ -412,9 +412,6 @@ namespace draw
 			// Draw small shadow to our child
 			utils::shadowBox("apiPrev", ImVec2(305.f, 41.f), ImVec2(374.f, 300.f), ImVec4(ImColor(9, 9, 9, 100)));
 
-			// Set x, y pos
-			ImGui::SetCursorPos(ImVec2(300.f, 35.f));
-
 			// Background color
 			ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(ImColor(14, 14, 14, 255)));
 			ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(ImColor(18, 18, 18, 255)));
@@ -423,6 +420,9 @@ namespace draw
 			ImGui::PushStyleVar(ImGuiStyleVar_ChildBorderSize, 1.f);
 			ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 10.f);
 
+                        // Set x, y pos
+			ImGui::SetCursorPos(ImVec2(300.f, 35.f));
+			
 			ImGui::BeginChild("Api-Preview-Box", ImVec2(374.f, 300.f), true);
 			{
 				// Set x, y pos
