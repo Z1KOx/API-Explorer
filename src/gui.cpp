@@ -217,8 +217,25 @@ namespace draw
 			// restore font size
 			ImGui::SetWindowFontScale(1.0f);
 
+			// Tooltip color
+			ImGui::PushStyleColor(ImGuiCol_PopupBg, ImVec4(ImColor(50, 29, 0, 255)));
+			ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(ImColor(170, 109, 16, 255)));
+
+			// Tooltip style
+			ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 10.f);
+			ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 1.f);
+
 			if (ImGui::IsItemHovered())
-				ImGui::SetTooltip("Please enter your API link here and click 'Submit'");
+			{
+				ImGui::SetNextWindowSize(ImVec2(300.f, 25.f));
+				ImGui::BeginTooltip();
+				ImGui::SetCursorPos(ImVec2(5.f, 5.f));
+				ImGui::Text("Please enter your API link here and click 'Submit'");
+				ImGui::EndTooltip();
+			}
+		
+			ImGui::PopStyleColor(2);
+			ImGui::PopStyleVar(2);
 		}
 
 		void APIInputBox() noexcept
@@ -358,8 +375,6 @@ namespace draw
 
 
 
-
-
 	namespace APIViewerBox
 	{
 		void apiResponseBg() noexcept
@@ -400,8 +415,8 @@ namespace draw
 
 						ImGui::PopStyleColor(1);
 					}
-					catch (json::parse_error& e) {
-						ImGui::TextColored(ImVec4(ImColor(255, 0, 0, 255)), "Error opening api");
+					catch (json::parse_error&) {
+						ImGui::TextColored(ImVec4(ImColor(255, 0, 0, 255)), "Failed to convert API response to JSON");
 					}
 				}
 

@@ -2,6 +2,9 @@
 
 #include <thread>
 
+#pragma warning(push)
+#pragma warning(disable: 28251) // wWinMain
+
 int __stdcall wWinMain(
 	HINSTANCE instance,
 	HINSTANCE previousInstance,
@@ -29,3 +32,5 @@ int __stdcall wWinMain(
 
 	return EXIT_SUCCESS;
 }
+
+#pragma warning(pop)
